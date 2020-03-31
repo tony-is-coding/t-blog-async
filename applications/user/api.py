@@ -5,13 +5,16 @@ from applications.user.schema import RegisterReq
 from applications.user.service import UserService
 
 from common.utils.parser import parser_data
+from common.utils.sign import validate_sign
 
 
 @bp.post("/user")
+@validate_sign
 async def register_api(request):
     data = parser_data(request)
     req_body = RegisterReq(**data)
-    return UserService.register_service(req_body)
+    res = await UserService.register_service(req_body)
+    return res
 
 
 @bp.post("/login")
