@@ -1,6 +1,8 @@
 import hashlib
 from functools import wraps
 
+from sanic.request import Request
+
 from config.config import SIGN_KEY
 
 
@@ -26,12 +28,11 @@ def make_sign(params: dict) -> str:
 
 
 def validate_sign(func):
-    async def wrapper(*args, **kwargs):
+    def wrapper(request: Request, *args, **kwargs):
         # TODO: 签名加密临时取消
         # real_sign = make_sign(param)
         # if real_sign != sign:
         #     raise_400("参数签名验证失败")
-        res = await func(*args, **kwargs)
-        return res
-
+        print("hello world")
+        return func
     return wrapper

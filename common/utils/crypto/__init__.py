@@ -31,7 +31,8 @@ async def decrypt(secret: str):
 
 
 async def demo():
-    password = "admin123"
+    import time
+    password = f"admin123_{int(time.time())}"
     en = await encrypt(password)
     print(en)
     de = await decrypt(en)

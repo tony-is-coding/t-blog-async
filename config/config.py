@@ -35,3 +35,7 @@ TOKEN_SECRET_KEY = config("TOKEN_SECRET_KEY", "", cast=str)
 
 # param sign key
 SIGN_KEY = config("SIGN_KEY", "nymiPvtx3vkfevXUbdJnBNuU97EtBKQp", cast=str)
+
+# default head image
+
+DEFAULT_HEAD_IMAGE = config("DEFAULT_HEAD_IMAGE","xxx",cast=str)
