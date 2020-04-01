@@ -6,3 +6,9 @@ class RegisterReq(BaseModel):
     username: str
     password: str
     ts: int
+
+
+class LoginReq(BaseModel):
+    username: str
+    password: str
+    ts: int

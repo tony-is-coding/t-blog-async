@@ -26,7 +26,7 @@ class Client:
     @staticmethod
     @lru_cache(maxsize=10000)
     async def redis_db():
-        redis_client = await aioredis.create_redis_pool("redis://127.0.0.1/1")
+        redis_client = await aioredis.create_redis_pool("redis://127.0.0.1/")
         return redis_client
 
 
@@ -37,8 +37,9 @@ async def ping_mysql():
     engine = await client.mysql_db()
     async with engine.acquire() as conn:
         proxy = await conn.execute("select * from user_base")
-        result = await proxy.fetchall()
-        print(result)
+        result = await proxy.fetchone()
+        print(result.email)
+        print(type(result))
     engine.close()
     await engine.wait_closed()
 
@@ -59,4 +60,4 @@ if __name__ == '__main__':
 
     loop = asyncio.get_event_loop()
     loop.run_until_complete(ping_mysql())
-    loop.run_until_complete(ping_redis())
+    # loop.run_until_complete(ping_redis())
