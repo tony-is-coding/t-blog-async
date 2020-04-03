@@ -3,12 +3,11 @@ from dataclasses import dataclass
 from functools import wraps
 
 from sanic.request import Request
-from sanic import response
 
-from common.generator import get_random_string
-from common.client import client
+from common.tools.generator import get_random_string
+from common.core.client import client
 
-USER_EXPIRE = 604800  # 60 * 60 * 24 * 7 ---  7天登录过期
+USER_EXPIRE = 604800  # 60 * 60 * 24 * 7 ---  7 days expire
 
 
 @dataclass
@@ -57,6 +56,11 @@ async def cur_user(token: str) -> UserInfo:
 
 
 def authorized():
+    """
+    halt the request, checkout token, if valid then set UserInfo object to request
+    :return:
+    """
+
     def decorator(f):
         @wraps(f)
         async def decorated_function(request: Request, *arg, **kwargs):

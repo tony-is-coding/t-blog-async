@@ -26,13 +26,14 @@ class Client:
     @staticmethod
     @lru_cache(maxsize=10000)
     async def redis_db():
-        redis_client = await aioredis.create_redis_pool("redis://127.0.0.1/")
+        redis_client = await aioredis.create_redis_pool("redis://127.0.0.1/1")
         return redis_client
 
 
 client = Client()
 
 
+# ping/pong test
 async def ping_mysql():
     engine = await client.mysql_db()
     async with engine.acquire() as conn:
@@ -47,10 +48,8 @@ async def ping_mysql():
 async def ping_redis():
     redis_db = await client.redis_db()
     await redis_db.set("name", "tony")
-
     value = await redis_db.get("name")
     print(value)
-
     redis_db.close()
     await redis_db.wait_closed()
 
