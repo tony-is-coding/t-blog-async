@@ -34,3 +34,11 @@ async def decrypt(secret: str) -> str:
         return con.decode("utf-8")
     except UnicodeEncodeError:
         ...  # TODO: deal error catch and hand
+
+
+"""
+## 设计思路二:
+hashlib.sha256() 单向一次
+
+
+"""

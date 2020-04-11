@@ -37,6 +37,7 @@ def get_random_string(length=12, allowed_chars=global_char):
 
 
 def id_generator(t: datetime, shard_id=0, seq=0):
+    """snow flake unique id"""
     start_epoch = 1585658821524
     res = int(datetime.timestamp(t) * 1000000 - start_epoch * 1000) << 8 | shard_id << 4 | seq
     return res

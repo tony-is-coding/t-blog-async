@@ -3,7 +3,6 @@ from sanic.exceptions import NotFound
 from asyncio import TimeoutError
 
 from applications import bpg
-from common import middle  # noqa
 from common.exceptions.handler import server_500_handler, timeout_handler, server_404_handler
 
 app = Sanic("t-blog-async")

@@ -19,13 +19,13 @@ class Client:
 
     @staticmethod
     @lru_cache(maxsize=10000)
-    async def mysql_db():
+    async def mysql_db() -> sa.engine:
         engine = await sa.create_engine(**config_dict)
         return engine
 
     @staticmethod
     @lru_cache(maxsize=10000)
-    async def redis_db():
+    async def redis_db() -> aioredis.ConnectionsPool:
         redis_client = await aioredis.create_redis_pool("redis://127.0.0.1/1")
         return redis_client
 

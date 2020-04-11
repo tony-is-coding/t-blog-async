@@ -4,10 +4,10 @@ from sanic.response import json
 from applications.user.blueprint import blueprint as bp
 from applications.user.schema import RegisterReq, LoginReq
 from applications.user.service import UserService
-from common.auth import authorized
+from common.core.auth import authorized
 
-from common.utils.parser import parser_data
-from common.utils.sign import validate_sign
+from common.tools.parser import parser_data
+from common.core.sign import validate_sign
 
 
 @bp.post("/user")
@@ -30,7 +30,8 @@ async def login(request):
 @bp.get("/logout")
 @authorized()
 async def logout(request: Request):
-    user = request.user
+    res = await UserService.logout_service(request.user.user_id)
+    return res
 
 
 @bp.get("/user")
@@ -54,5 +55,3 @@ async def change_email(request):
 @bp.put("/password")
 async def change_password(request):
     pass
-
-

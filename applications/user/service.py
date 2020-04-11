@@ -5,8 +5,8 @@ from sanic.response import json
 
 from applications.user.persistent import diff_username, diff_email, get_user_by_username
 from applications.user.schema import RegisterReq, LoginReq
-from common.auth import login_user, UserInfo, logout_user
-from common.client import client
+from common.core.auth import login_user, UserInfo, logout_user
+from common.core.client import client
 from common.utils.crypto import decrypt, encrypt
 from config import config
 
@@ -16,7 +16,7 @@ class UserService:
     @classmethod
     async def validate_ts(cls, secret: str, ts: int) -> str:
         """
-        check if the ts matched the ts substring of secret password str
+        check if the ts matched the ts substring of secret password string
 
         :param
             secret: the secret string, format: encrypt(password_ts)
@@ -37,7 +37,8 @@ class UserService:
         """
         compare password
         """
-        if cls.validate_ts(secret, ts) == en_pwd:
+        res = await cls.validate_ts(secret, ts)
+        if res == en_pwd:
             return True
         return False
 
@@ -58,9 +59,10 @@ class UserService:
             if exist_email:
                 print("exist email")
 
-            password = cls.validate_ts(body.password, body.ts)
+            password = await cls.validate_ts(body.password, body.ts)
             res = await conn.execute(
-                text("insert into user_base(username,password,email) values(:username,:password,:email)"), dict(
+                text("insert into user_base(username,password,email) values(:username,:password,:email)"),
+                dict(
                     username=body.username,
                     password=password,
                     email=body.email
@@ -75,11 +77,17 @@ class UserService:
 
     @classmethod
     async def login_service(cls, body: LoginReq) -> json:
+        """
+        login user
+        :param body: LoginReq
+        :return: json
+        """
         engine = await client.mysql_db()
 
         async with engine.acquire() as conn:
             user = await get_user_by_username(conn, body.username)
-            if not cls.check_password(body.password, body.ts, user.password):
+            valid_pwd = await cls.check_password(body.password, body.ts, user.password)
+            if not valid_pwd:
                 raise ValueError("password is not valid")
             token = await login_user(
                 user_id=user.id,

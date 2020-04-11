@@ -38,13 +38,3 @@ def json_loads(v):
 def json_dumps(v):
     return ujson.dumps(v, ensure_ascii=False)
 
-
-def decimal_to_str(v, num=2):
-    """
-    :param v: passed value
-    :param num: division
-    :return: None
-    """
-    assert isinstance(v, Decimal)
-    v = v.quantize(Decimal((0, (1,), -num)), ROUND_HALF_UP)
-    return "{:f}".format(v.normalize())

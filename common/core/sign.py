@@ -8,7 +8,7 @@ from config.config import SIGN_KEY
 
 def sha256_sign(val) -> str:
     """
-    SHA256签名
+    SHA256 sign
     """
     try:
         m = hashlib.sha256()
@@ -19,20 +19,9 @@ def sha256_sign(val) -> str:
 
 
 def make_sign(params: dict) -> str:
-    """参数签名"""
+    """signature"""
     sign_key = SIGN_KEY
     data = sorted(params.items(), key=lambda d: d[0], reverse=False)
     data_str = '&'.join(
         ['%s=%s' % (k.strip(), str(vl).strip()) for (k, vl) in data])
     return sha256_sign(sign_key + data_str)
-
-
-def validate_sign(func):
-    def wrapper(request: Request, *args, **kwargs):
-        # TODO: 签名加密临时取消
-        # real_sign = make_sign(param)
-        # if real_sign != sign:
-        #     raise_400("参数签名验证失败")
-        print("hello world")
-        return func
-    return wrapper

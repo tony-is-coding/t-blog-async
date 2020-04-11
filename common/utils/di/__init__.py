@@ -35,3 +35,8 @@
 #
 # if __name__ == '__main__':
 #     app.run()
+
+
+"""
+dependence inject， plan to copy from  fast-api frameword
+"""
