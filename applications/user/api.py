@@ -7,11 +7,9 @@ from applications.user.service import UserService
 from common.core.auth import authorized
 
 from common.tools.parser import parser_data
-from common.core.sign import validate_sign
 
 
 @bp.post("/user")
-@validate_sign
 async def register(request):
     data = parser_data(request)
     req = RegisterReq(**data)

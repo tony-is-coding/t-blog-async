@@ -57,7 +57,9 @@ async def cur_user(token: str) -> UserInfo:
 
 def authorized():
     """
-    halt the request, checkout token, if valid then set UserInfo object to request
+    halt the request
+    checkout token
+    if is valid then set the UserInfo object to request
     :return:
     """
 
